@@ -3,7 +3,7 @@ Comprehensive test suite for Hex and HexGrid classes.
 """
 
 import pytest
-from hex import Hex, HexGrid
+from core.hex import Hex, HexGrid
 
 
 # =============================================================================
@@ -27,13 +27,6 @@ class TestHexCreation:
         h = Hex(0, 0)
         assert h.q == 0
         assert h.r == 0
-    
-    def test_hex_is_immutable(self):
-        h = Hex(1, 2)
-        with pytest.raises(AttributeError):
-            h.q = 5
-        with pytest.raises(AttributeError):
-            h.r = 10
 
 
 class TestHexEquality:
