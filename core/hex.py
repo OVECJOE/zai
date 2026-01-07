@@ -5,7 +5,6 @@ Provides core geometric operations for hex-based board games.
 
 from dataclasses import dataclass
 from typing import List, Set, Tuple, Any
-import math
 
 @dataclass(frozen=True)
 class Hex:
