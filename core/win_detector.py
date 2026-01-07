@@ -3,7 +3,7 @@ Win condition detection system.
 Implements all four win conditions efficiently.
 """
 
-from typing import Optional, Set
+from typing import Optional, Set, List
 from collections import deque
 from core.hex import Hex, HexGrid
 from core.entities.player import Player, Stone
@@ -91,9 +91,9 @@ class WinDetector:
 
         # Get opponent components
         components = self.conn_engine.find_components(stones)
-        opponent_components = components.get(opponent, [])
+        opponent_components: List[Set[Hex]] = components.get(opponent, [])
         
-        # Check each opponent component
+        # Check each opponent component (already Set[Hex])
         for component in opponent_components:
             if self._is_encircled(stones, component, active_player):
                 return active_player
@@ -103,7 +103,7 @@ class WinDetector:
     def _is_encircled(
         self,
         stones: Set[Stone],
-        component: Set[Stone],
+        component: Set[Hex],
         encircling_player: Player
     ) -> bool:
         """
@@ -114,8 +114,8 @@ class WinDetector:
         
         # Find all empty hexes adjacent to the component
         adjacent_empty = set()
-        for stone in component:
-            for neighbor in self.grid.get_neighbors(stone.position):
+        for hex_pos in component:
+            for neighbor in self.grid.get_neighbors(hex_pos):
                 if neighbor not in stone_positions:
                     adjacent_empty.add(neighbor)
         

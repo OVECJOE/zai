@@ -39,10 +39,10 @@ class ConnectivityEngine:
         # All stones must be reachable
         return len(visited) == len(player_stones)
 
-    def find_components(self, stones: Set[Stone]) -> Dict[Player, List[Set[Stone]]]:
+    def find_components(self, stones: Set[Stone]) -> Dict[Player, List[Set[Hex]]]:
         """
         Find all connected components for each player.
-        Returns dict mapping player to list of component sets.
+        Returns dict mapping player to list of component sets (positions).
         """
 
         components = {Player.WHITE: [], Player.RED: []}
