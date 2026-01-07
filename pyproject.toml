@@ -1,9 +1,29 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "zai"
 version = "0.1.0"
-description = "Add your description here"
+description = "A robust game engine for the strategic board game Zai"
 readme = "README.md"
-requires-python = ">=3.14"
-dependencies = [
-    "pytest>=9.0.2",
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [
+    {name = "OVECJOE", email = "vohachor@gmail.com"}
 ]
+keywords = ["game", "strategy", "hexagonal", "board-game", "ai"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+]
+
+[project.urls]
+Homepage = "https://github.com/OVECJOE/zai"
+Repository = "https://github.com/OVECJOE/zai"
