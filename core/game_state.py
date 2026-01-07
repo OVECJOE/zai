@@ -123,7 +123,7 @@ class GameStateManager:
 
         elif isinstance(move, SacrificeMove):
             new_stones = {s for s in new_stones if s.position != move.sacrifice_position}
-            if len(new_stones) < len(state.stones):
+            if len(new_stones) >= len(state.stones):
                 raise ValueError("No stone to sacrifice at given position.")
             
             # Add two new stones
