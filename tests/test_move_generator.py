@@ -2,10 +2,10 @@
 Robust test suite for MoveGenerator in move_generator.py
 """
 import pytest
-from core.hex import Hex, HexGrid
-from core.entities.player import Player, Stone, Phase
-from core.entities.move import PlacementMove, SacrificeMove
-from core.move_generator import MoveGenerator
+from zai_engine.hex import Hex, HexGrid
+from zai_engine.entities.player import Player, Stone, Phase
+from zai_engine.entities.move import PlacementMove, SacrificeMove
+from zai_engine.move_generator import MoveGenerator
 
 
 def make_stones(positions, player):

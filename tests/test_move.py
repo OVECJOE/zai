@@ -2,8 +2,8 @@
 Test suite for Move, PlacementMove, SacrificeMove, and their factories.
 """
 
-from core.entities.move import Move, PlacementMove, SacrificeMove, create_placement_move, create_sacrifice_move
-from core.hex import Hex
+from zai_engine.entities.move import Move, PlacementMove, SacrificeMove, create_placement_move, create_sacrifice_move
+from zai_engine.hex import Hex
 
 class TestMoveBase:
     def test_move_repr(self):

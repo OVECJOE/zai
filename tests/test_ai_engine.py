@@ -2,11 +2,11 @@
 Test suite for AIEngine in ai_engine.py
 """
 import pytest
-from core.hex import Hex, HexGrid
-from core.entities.player import Player, Stone, Phase
-from core.entities.move import PlacementMove, SacrificeMove
-from core.game_state import GameState, GameStateManager
-from core.ai_engine import AIEngine, TranspositionTable, SearchResult
+from zai_engine.hex import Hex, HexGrid
+from zai_engine.entities.player import Player, Stone, Phase
+from zai_engine.entities.move import PlacementMove, SacrificeMove
+from zai_engine.game_state import GameState, GameStateManager
+from zai_engine.ai_engine import AIEngine, TranspositionTable, SearchResult
 
 
 def make_state(stones, turn=1, phase=Phase.PLACEMENT, active_player=Player.WHITE, winner=None):

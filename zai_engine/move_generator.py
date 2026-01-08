@@ -5,10 +5,10 @@ Generates all legal moves for a given game state.
 """
 
 from typing import List, Set
-from core.hex import Hex, HexGrid
-from core.entities.player import Player, Stone, Phase
-from core.entities.move import Move, PlacementMove, SacrificeMove, create_placement_move, create_sacrifice_move
-from core.connectivity import ConnectivityEngine
+from zai_engine.hex import Hex, HexGrid
+from zai_engine.entities.player import Player, Stone, Phase
+from zai_engine.entities.move import Move, PlacementMove, SacrificeMove, create_placement_move, create_sacrifice_move
+from zai_engine.connectivity import ConnectivityEngine
 
 
 class MoveGenerator:

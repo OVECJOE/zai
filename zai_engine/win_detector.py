@@ -5,9 +5,9 @@ Implements all four win conditions efficiently.
 
 from typing import Optional, Set, List
 from collections import deque
-from core.hex import Hex, HexGrid
-from core.entities.player import Player, Stone
-from core.connectivity import ConnectivityEngine
+from zai_engine.hex import Hex, HexGrid
+from zai_engine.entities.player import Player, Stone
+from zai_engine.connectivity import ConnectivityEngine
 
 
 class WinDetector:

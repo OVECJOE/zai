@@ -4,10 +4,10 @@ Heuristic evaluation of game positions.
 """
 
 from typing import Set
-from core.hex import HexGrid
-from core.entities.player import Stone, Player
-from core.game_state import GameState
-from core.connectivity import ConnectivityEngine
+from zai_engine.hex import HexGrid
+from zai_engine.entities.player import Stone, Player
+from zai_engine.game_state import GameState
+from zai_engine.connectivity import ConnectivityEngine
 
 
 class PositionEvaluator:

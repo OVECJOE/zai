@@ -6,13 +6,13 @@ Supports iterative deepening and transposition tables.
 import time
 from typing import Optional, Dict, Tuple
 from dataclasses import dataclass
-from core.hex import HexGrid
-from core.entities.player import Player
-from core.game_state import GameState, GameStateManager
-from core.entities.move import Move
-from core.move_generator import MoveGenerator
-from core.win_detector import WinDetector
-from core.evaluator import PositionEvaluator
+from zai_engine.hex import HexGrid
+from zai_engine.entities.player import Player
+from zai_engine.game_state import GameState, GameStateManager
+from zai_engine.entities.move import Move
+from zai_engine.move_generator import MoveGenerator
+from zai_engine.win_detector import WinDetector
+from zai_engine.evaluator import PositionEvaluator
 
 
 @dataclass

@@ -107,9 +107,9 @@ uv sync --dev
 ### Human vs Human
 
 ```python
-from core.game_engine import GameEngine, GameMode
-from core.entities.move import PlacementMove
-from core.hex import Hex
+from zai_engine.game_engine import GameEngine, GameMode
+from zai_engine.entities.move import PlacementMove
+from zai_engine.hex import Hex
 
 # Create engine
 engine = GameEngine(mode=GameMode.HUMAN_VS_HUMAN)
@@ -126,10 +126,10 @@ print(f"Legal moves: {len(engine.get_legal_moves())}")
 ### Human vs AI
 
 ```python
-from core.game_engine import GameEngine, GameMode, Difficulty
-from core.entities.player import Player
-from core.entities.move import PlacementMove
-from core.hex import Hex
+from zai_engine.game_engine import GameEngine, GameMode, Difficulty
+from zai_engine.entities.player import Player
+from zai_engine.entities.move import PlacementMove
+from zai_engine.hex import Hex
 
 engine = GameEngine(mode=GameMode.HUMAN_VS_AI)
 engine.configure_ai(Player.RED, Difficulty.MEDIUM)
@@ -145,7 +145,7 @@ print(f"AI played: {ai_move}")
 ### AI vs AI
 
 ```python
-from core.game_engine import GameEngine, GameMode, Difficulty
+from zai_engine.game_engine import GameEngine, GameMode, Difficulty
 
 engine = GameEngine(mode=GameMode.AI_VS_AI)
 engine.ai_difficulty = Difficulty.EASY

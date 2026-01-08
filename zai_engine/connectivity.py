@@ -5,8 +5,8 @@ Validates stone networks and detects critical structures.
 
 from typing import Set, List, Dict, Tuple
 from collections import deque
-from core.hex import Hex, HexGrid
-from core.entities.player import Player, Stone
+from zai_engine.hex import Hex, HexGrid
+from zai_engine.entities.player import Player, Stone
 
 
 class ConnectivityEngine:

@@ -3,10 +3,10 @@ Robust test suite for GameState and GameStateManager classes in game_state.py
 """
 import pytest
 import json
-from core.hex import Hex, HexGrid
-from core.entities.player import Player, Stone, Phase
-from core.entities.move import PlacementMove, SacrificeMove
-from core.game_state import GameState, GameStateManager
+from zai_engine.hex import Hex, HexGrid
+from zai_engine.entities.player import Player, Stone, Phase
+from zai_engine.entities.move import PlacementMove, SacrificeMove
+from zai_engine.game_state import GameState, GameStateManager
 
 
 class TestGameState:

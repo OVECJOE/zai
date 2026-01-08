@@ -7,9 +7,9 @@ from dataclasses import dataclass, field
 from typing import Set, Optional, List, Tuple
 import hashlib
 import json
-from core.hex import Hex, HexGrid
-from core.entities.player import Player, Stone, Phase
-from core.entities.move import Move, PlacementMove, SacrificeMove
+from zai_engine.hex import Hex, HexGrid
+from zai_engine.entities.player import Player, Stone, Phase
+from zai_engine.entities.move import Move, PlacementMove, SacrificeMove
 
 
 @dataclass(frozen=True)

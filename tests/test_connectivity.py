@@ -3,9 +3,9 @@ Unit tests for ConnectivityEngine in connectivity.py
 """
 
 import pytest
-from core.hex import Hex, HexGrid
-from core.entities.player import Player, Stone
-from core.connectivity import ConnectivityEngine
+from zai_engine.hex import Hex, HexGrid
+from zai_engine.entities.player import Player, Stone
+from zai_engine.connectivity import ConnectivityEngine
 
 class TestConnectivityEngine:
     def setup_method(self):

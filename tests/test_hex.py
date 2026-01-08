@@ -3,7 +3,7 @@ Comprehensive test suite for Hex and HexGrid classes.
 """
 
 import pytest
-from core.hex import Hex, HexGrid
+from zai_engine.hex import Hex, HexGrid
 
 
 # =============================================================================

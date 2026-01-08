@@ -6,9 +6,9 @@ Provides high-level API for game management.
 from typing import Optional, List, Set
 from enum import Enum
 from hex import HexGrid, Hex
-from core.entities.player import Player, Phase
+from zai_engine.entities.player import Player, Phase
 from game_state import GameState, GameStateManager
-from core.entities.move import Move, PlacementMove, SacrificeMove
+from zai_engine.entities.move import Move, PlacementMove, SacrificeMove
 from move_generator import MoveGenerator
 from win_detector import WinDetector
 from connectivity import ConnectivityEngine

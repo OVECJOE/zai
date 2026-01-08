@@ -6,7 +6,7 @@ Defines the core game entities.
 from enum import Enum
 from dataclasses import dataclass
 from typing import Any
-from core.hex import Hex
+from zai_engine.hex import Hex
 
 
 class Player(Enum):

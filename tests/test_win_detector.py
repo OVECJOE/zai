@@ -2,9 +2,9 @@
 Robust test suite for WinDetector class in win_detector.py
 """
 
-from core.hex import Hex, HexGrid
-from core.entities.player import Player, Stone
-from core.win_detector import WinDetector
+from zai_engine.hex import Hex, HexGrid
+from zai_engine.entities.player import Player, Stone
+from zai_engine.win_detector import WinDetector
 
 
 def make_stones(positions, player):

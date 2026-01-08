@@ -5,7 +5,7 @@ Supports placement moves and sacrifice moves.
 
 from dataclasses import dataclass
 from typing import Tuple
-from core.hex import Hex
+from zai_engine.hex import Hex
 
 
 @dataclass(frozen=True)
