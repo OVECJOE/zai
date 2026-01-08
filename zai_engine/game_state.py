@@ -3,9 +3,8 @@ Game state management.
 Immutable game state with efficient cloning and hashing.
 """
 
-from dataclasses import dataclass, field
-from typing import Set, Optional, List, Tuple
-import hashlib
+from dataclasses import dataclass
+from typing import Set, Optional, Tuple
 import json
 from zai_engine.hex import Hex, HexGrid
 from zai_engine.entities.player import Player, Stone, Phase

@@ -3,16 +3,16 @@ Main game engine coordinating all systems.
 Provides high-level API for game management.
 """
 
-from typing import Optional, List, Set
+from typing import Optional, List
 from enum import Enum
-from hex import HexGrid, Hex
+from zai_engine.hex import HexGrid, Hex
 from zai_engine.entities.player import Player, Phase
-from game_state import GameState, GameStateManager
+from zai_engine.game_state import GameStateManager
 from zai_engine.entities.move import Move, PlacementMove, SacrificeMove
-from move_generator import MoveGenerator
-from win_detector import WinDetector
-from connectivity import ConnectivityEngine
-from ai_engine import AIEngine, SearchResult
+from zai_engine.move_generator import MoveGenerator
+from zai_engine.win_detector import WinDetector
+from zai_engine.connectivity import ConnectivityEngine
+from zai_engine.ai_engine import AIEngine, SearchResult
 
 
 class GameMode(Enum):
