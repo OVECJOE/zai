@@ -80,11 +80,26 @@ The engine is built with enterprise-level design principles:
 
 ## Installation
 
-No dependencies required - pure Python 3.8+:
+Install via pip:
 
 ```bash
-# Simply place all .py files in the same directory
-python example_usage.py
+pip install zai_engine
+```
+
+Or with uv (recommended):
+
+```bash
+uv add zai_engine
+```
+
+### Development Installation
+
+For development, clone the repository and install with dev dependencies:
+
+```bash
+git clone https://github.com/OVECJOE/zai.git
+cd zai
+uv sync --dev
 ```
 
 ## Quick Start
