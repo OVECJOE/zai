@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "zai_engine"
-version = "0.1.1"
+version = "0.1.2"
 description = "A robust game engine for the strategic board game Zai"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -27,3 +27,7 @@ classifiers = [
 [project.urls]
 Homepage = "https://github.com/OVECJOE/zai"
 Repository = "https://github.com/OVECJOE/zai"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["core*"]
