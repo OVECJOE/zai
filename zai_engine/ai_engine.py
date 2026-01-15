@@ -4,6 +4,7 @@ Supports iterative deepening and transposition tables.
 """
 
 import time
+import random
 from typing import Optional, Dict, Tuple
 from dataclasses import dataclass
 from zai_engine.connectivity import ConnectivityEngine
@@ -92,7 +93,20 @@ class AIEngine:
             SearchResult with best move and statistics
         """
         start_time = time.time()
-        best_move = None
+        
+        # Initial legal moves
+        moves = self.move_generator.get_legal_moves(
+            set(state.stones),
+            state.active_player,
+            state.phase,
+            state.turn
+        )
+        
+        if not moves:
+            return SearchResult(None, -float('inf'), 0, 0, 0)
+            
+        # FIX: Default to a random move to ensure we always return SOMETHING
+        best_move = random.choice(moves)
         best_score = float('-inf')
         nodes_searched = 0
         depth_reached = 0
@@ -109,8 +123,11 @@ class AIEngine:
                     time_limit
                 )
                 
-                best_move = move
-                best_score = score
+                # Only update if we completed the search for this depth
+                if move:
+                    best_move = move
+                    best_score = score
+                
                 nodes_searched += nodes
                 depth_reached = depth
                 
@@ -203,9 +220,6 @@ class AIEngine:
     ) -> Tuple[float, int]:
         """
         Minimax with alpha-beta pruning.
-        
-        Returns:
-            (score, nodes_searched)
         """
         if time.time() - start_time > time_limit:
             raise TimeoutError()
