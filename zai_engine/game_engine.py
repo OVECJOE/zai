@@ -105,6 +105,12 @@ class GameEngine:
         
         if winner is not None:
             self.state = self.state_manager.set_winner(self.state, winner)
+            return True
+        
+        # Check if the next player (who is now active) has any legal moves.
+        # If they don't, the current player (who just moved) wins.
+        if not self.get_legal_moves():
+            self.state = self.state_manager.set_winner(self.state, current_player)
         
         return True
     
