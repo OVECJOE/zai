@@ -44,7 +44,8 @@ class TestConnectivityEngine:
         points = self.engine.find_articulation_points(stones, Player.WHITE)
         assert Hex(0,1) in points
 
-    def test_find_bridges_none(self):
+    def test_find_bridges_pair(self):
+        # Renamed from test_find_bridges_none because a 2-stone component DOES have a bridge (the edge connecting them)
         stones = self.make_stones([(0,0), (0,1)], Player.WHITE)
         bridges = self.engine.find_bridges(stones, Player.WHITE)
         expected = {(Hex(0,0), Hex(0,1))}
