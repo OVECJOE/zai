@@ -17,30 +17,26 @@ class WinDetector:
         self.grid = grid
         self.conn_engine = ConnectivityEngine(grid)
     
-    def check_winner(self, stones: Set[Stone], active_player: Player) -> Optional[Player]:
+    def check_winner(self, stones: Set[Stone], player_who_moved: Player) -> Optional[Player]:
         """
         Check all win conditions and return winner if any.
         Checks in order of computational efficiency.
         """
-        # Check isolation first (fastest)
-        winner = self.detect_isolation(stones)
-        if winner:
-            return winner
-        
-        # Check territory control (fast)
         winner = self.detect_territory_control(stones)
         if winner:
             return winner
         
-        # Check encirclement (medium)
-        winner = self.detect_encirclement(stones, active_player)
+        winner = self.detect_encirclement(stones, player_who_moved)
         if winner:
             return winner
         
-        # Check network completion (slower)
         winner = self.detect_network_completion(stones)
         if winner:
             return winner
+        
+        opponent = player_who_moved.opponent()
+        if not self.conn_engine.is_connected(stones, opponent):
+            return player_who_moved
         
         return None
     
@@ -82,21 +78,19 @@ class WinDetector:
     def detect_encirclement(
         self,
         stones: Set[Stone],
-        active_player: Player
+        player_who_moved: Player
     ) -> Optional[Player]:
         """
         Detect if active player has completely surrounded opponent stones.
         """
-        opponent = active_player.opponent()
+        opponent = player_who_moved.opponent()
 
-        # Get opponent components
         components = self.conn_engine.find_components(stones)
         opponent_components: List[Set[Hex]] = components.get(opponent, [])
         
-        # Check each opponent component (already Set[Hex])
         for component in opponent_components:
-            if self._is_encircled(stones, component, active_player):
-                return active_player
+            if self._is_encircled(stones, component, player_who_moved):
+                return player_who_moved
         
         return None
 
@@ -112,7 +106,6 @@ class WinDetector:
         """
         stone_positions = {s.position for s in stones}
         
-        # Find all empty hexes adjacent to the component
         adjacent_empty = set()
         for hex_pos in component:
             for neighbor in self.grid.get_neighbors(hex_pos):
@@ -120,12 +113,9 @@ class WinDetector:
                     adjacent_empty.add(neighbor)
         
         if not adjacent_empty:
-            # Component has no empty neighbors (shouldn't happen normally)
             return False
         
-        # Check if all adjacent empty hexes are surrounded by encircling player
         for empty_hex in adjacent_empty:
-            # Check if this empty hex can reach the edge without crossing encircling stones
             if self._can_reach_edge_without_crossing(
                 empty_hex, 
                 stones, 
@@ -152,7 +142,6 @@ class WinDetector:
         while queue:
             current = queue.popleft()
             
-            # Check if reached edge
             if self.grid.is_edge_hex(current) >= 0:
                 return True
             
@@ -160,7 +149,6 @@ class WinDetector:
                 if neighbor in visited:
                     continue
                 
-                # Can move through empty hexes or opponent's stones
                 neighbor_player = stone_positions.get(neighbor)
                 if neighbor_player is None or neighbor_player != blocking_player:
                     visited.add(neighbor)
@@ -187,14 +175,12 @@ class WinDetector:
         if not player_positions:
             return False
         
-        # BFS from each stone to find its connected component
         visited_global = set()
         
         for start_pos in player_positions:
             if start_pos in visited_global:
                 continue
             
-            # Find this component
             component = {start_pos}
             visited_global.add(start_pos)
             queue = deque([start_pos])
@@ -208,14 +194,12 @@ class WinDetector:
                         component.add(neighbor)
                         queue.append(neighbor)
             
-            # Check which edges this component touches
             component_edges = set()
             for hex_pos in component:
                 edge_idx = self.grid.is_edge_hex(hex_pos)
                 if edge_idx >= 0:
                     component_edges.add(edge_idx)
             
-            # If this component touches all 6 edges, player wins
             if len(component_edges) == 6:
                 return True
         

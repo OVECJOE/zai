@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "zai_engine"
-version = "0.1.5"
+version = "0.1.6"
 description = "A robust game engine for the strategic board game Zai"
 readme = "README.md"
 requires-python = ">=3.10"

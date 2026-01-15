@@ -6,6 +6,7 @@ Supports iterative deepening and transposition tables.
 import time
 from typing import Optional, Dict, Tuple
 from dataclasses import dataclass
+from zai_engine.connectivity import ConnectivityEngine
 from zai_engine.hex import HexGrid
 from zai_engine.entities.player import Player
 from zai_engine.game_state import GameState, GameStateManager
@@ -70,6 +71,7 @@ class AIEngine:
         self.move_generator = MoveGenerator(grid)
         self.win_detector = WinDetector(grid)
         self.evaluator = PositionEvaluator(grid)
+        self.connectivity = ConnectivityEngine(grid)
         self.transposition_table = TranspositionTable()
     
     def find_best_move(
@@ -95,7 +97,6 @@ class AIEngine:
         nodes_searched = 0
         depth_reached = 0
         
-        # Iterative deepening
         for depth in range(1, max_depth + 1):
             if time.time() - start_time > time_limit:
                 break
@@ -154,31 +155,32 @@ class AIEngine:
             if time.time() - start_time > time_limit:
                 raise TimeoutError()
             
-            # Apply move
+            player_making_move = state.active_player
             new_state = self.state_manager.apply_move(state, move)
             
-            # Check for immediate win
-            winner = self.win_detector.check_winner(
-                set(new_state.stones),
-                state.active_player
-            )
+            stones_after = set(new_state.stones)
+            if not self.connectivity.is_connected(stones_after, player_making_move):
+                score = -10000.0
+            else:
+                winner = self.win_detector.check_winner(stones_after, player_making_move)
+                
+                if winner is not None:
+                    new_state = self.state_manager.set_winner(new_state, winner)
+                
+                score, child_nodes = self._minimax(
+                    new_state,
+                    depth - 1,
+                    alpha,
+                    beta,
+                    False,
+                    player_making_move,
+                    start_time,
+                    time_limit
+                )
+                
+                nodes += child_nodes
             
-            if winner is not None:
-                new_state = self.state_manager.set_winner(new_state, winner)
-            
-            # Search
-            score, child_nodes = self._minimax(
-                new_state,
-                depth - 1,
-                alpha,
-                beta,
-                False,
-                state.active_player,
-                start_time,
-                time_limit
-            )
-            
-            nodes += child_nodes + 1
+            nodes += 1
             
             if score > best_score:
                 best_score = score
@@ -205,11 +207,9 @@ class AIEngine:
         Returns:
             (score, nodes_searched)
         """
-        # Check timeout
         if time.time() - start_time > time_limit:
             raise TimeoutError()
         
-        # Terminal conditions
         if state.winner is not None:
             eval_score = self.evaluator.evaluate(state, maximizing_player)
             return eval_score, 0
@@ -218,13 +218,11 @@ class AIEngine:
             eval_score = self.evaluator.evaluate(state, maximizing_player)
             return eval_score, 0
         
-        # Check transposition table
         state_hash = hash(state)
         cached = self.transposition_table.get(state_hash, depth)
         if cached is not None:
             return cached[0], 0
         
-        # Generate moves
         moves = self.move_generator.get_legal_moves(
             set(state.stones),
             state.active_player,
@@ -233,7 +231,6 @@ class AIEngine:
         )
         
         if not moves:
-            # No legal moves (shouldn't happen normally)
             eval_score = self.evaluator.evaluate(state, maximizing_player)
             return eval_score, 0
         
@@ -244,31 +241,32 @@ class AIEngine:
             best_move = None
             
             for move in moves:
-                # Apply move
+                player_making_move = state.active_player
                 new_state = self.state_manager.apply_move(state, move)
                 
-                # Check win
-                winner = self.win_detector.check_winner(
-                    set(new_state.stones),
-                    state.active_player
-                )
+                stones_after = set(new_state.stones)
+                if not self.connectivity.is_connected(stones_after, player_making_move):
+                    score = -10000.0
+                else:
+                    winner = self.win_detector.check_winner(stones_after, player_making_move)
+                    
+                    if winner is not None:
+                        new_state = self.state_manager.set_winner(new_state, winner)
+                    
+                    score, child_nodes = self._minimax(
+                        new_state,
+                        depth - 1,
+                        alpha,
+                        beta,
+                        False,
+                        maximizing_player,
+                        start_time,
+                        time_limit
+                    )
+                    
+                    nodes += child_nodes
                 
-                if winner is not None:
-                    new_state = self.state_manager.set_winner(new_state, winner)
-                
-                # Recurse
-                score, child_nodes = self._minimax(
-                    new_state,
-                    depth - 1,
-                    alpha,
-                    beta,
-                    False,
-                    maximizing_player,
-                    start_time,
-                    time_limit
-                )
-                
-                nodes += child_nodes + 1
+                nodes += 1
                 
                 if score > max_score:
                     max_score = score
@@ -277,9 +275,8 @@ class AIEngine:
                 alpha = max(alpha, score)
                 
                 if beta <= alpha:
-                    break  # Beta cutoff
+                    break
             
-            # Cache result
             if best_move:
                 self.transposition_table.put(state_hash, depth, max_score, best_move)
             
@@ -290,31 +287,32 @@ class AIEngine:
             best_move = None
             
             for move in moves:
-                # Apply move
+                player_making_move = state.active_player
                 new_state = self.state_manager.apply_move(state, move)
                 
-                # Check win
-                winner = self.win_detector.check_winner(
-                    set(new_state.stones),
-                    state.active_player
-                )
+                stones_after = set(new_state.stones)
+                if not self.connectivity.is_connected(stones_after, player_making_move):
+                    score = 10000.0
+                else:
+                    winner = self.win_detector.check_winner(stones_after, player_making_move)
+                    
+                    if winner is not None:
+                        new_state = self.state_manager.set_winner(new_state, winner)
+                    
+                    score, child_nodes = self._minimax(
+                        new_state,
+                        depth - 1,
+                        alpha,
+                        beta,
+                        True,
+                        maximizing_player,
+                        start_time,
+                        time_limit
+                    )
+                    
+                    nodes += child_nodes
                 
-                if winner is not None:
-                    new_state = self.state_manager.set_winner(new_state, winner)
-                
-                # Recurse
-                score, child_nodes = self._minimax(
-                    new_state,
-                    depth - 1,
-                    alpha,
-                    beta,
-                    True,
-                    maximizing_player,
-                    start_time,
-                    time_limit
-                )
-                
-                nodes += child_nodes + 1
+                nodes += 1
                 
                 if score < min_score:
                     min_score = score
@@ -323,9 +321,8 @@ class AIEngine:
                 beta = min(beta, score)
                 
                 if beta <= alpha:
-                    break  # Alpha cutoff
+                    break
             
-            # Cache result
             if best_move:
                 self.transposition_table.put(state_hash, depth, min_score, best_move)
             

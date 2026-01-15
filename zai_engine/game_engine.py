@@ -58,7 +58,7 @@ class GameEngine:
         self.ai_player: Optional[Player] = None
         self.ai_difficulty = Difficulty.MEDIUM
         
-        # Initialize game
+        # Initialize game state
         self.state = self.state_manager.create_initial_state()
         
     def configure_ai(self, ai_player: Player, difficulty: Difficulty = Difficulty.MEDIUM):
@@ -84,18 +84,24 @@ class GameEngine:
         if self.state.winner is not None:
             return False
         
-        # Validate move
         if not self.is_valid_move(move):
             return False
         
-        # Apply move
+        current_player = self.state.active_player
+        
+        stones_before = set(self.state.stones)
+        if not self.connectivity.is_connected(stones_before, current_player):
+            self.state = self.state_manager.set_winner(self.state, current_player.opponent())
+            return False
+        
         self.state = self.state_manager.apply_move(self.state, move)
         
-        # Check win condition
-        winner = self.win_detector.check_winner(
-            set(self.state.stones),
-            self.get_previous_player()
-        )
+        stones_after = set(self.state.stones)
+        if not self.connectivity.is_connected(stones_after, current_player):
+            self.state = self.state_manager.set_winner(self.state, current_player.opponent())
+            return True
+        
+        winner = self.win_detector.check_winner(stones_after, current_player)
         
         if winner is not None:
             self.state = self.state_manager.set_winner(self.state, winner)
@@ -115,7 +121,6 @@ class GameEngine:
         if self.ai_player != self.state.active_player:
             return None
         
-        # Search for best move
         result = self.ai.find_best_move(
             self.state,
             max_depth=self.ai_difficulty.depth,
